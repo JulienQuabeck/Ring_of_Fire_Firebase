@@ -1,0 +1,72 @@
+@import './../../styles.scss';
+
+.field {
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    background-image: url('/assets/img/background_wood.jpg');
+    background-size: cover;
+    @include dFlex();
+}
+
+.card-stack {
+    position: relative;
+
+    img {
+        position: absolute;
+        width: 140px;
+    }
+}
+
+.top-card {
+    cursor: pointer;
+    transition: all 150ms ease-in-out;
+
+    &:hover {
+        transform: scale(1.1) translateY(-10px);
+    }
+}
+
+.played-card {
+    right: 25px;
+    transform: scale(1.4) translateX(140px) translateY(-200px) rotate(-10deg);
+}
+
+.pick-card {
+    transition: all 1s ease-in-out;
+    animation: pick-card-animation 1s ease-in-out;
+    transform: scale(1.4) translateX(140px) translateY(-200px) rotate(-10deg);
+}
+
+@keyframes pick-card-animation {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.7);
+    }
+
+    100% {
+        transform: scale(1.4) translateX(140px) translateY(-200px) rotate(-10deg);
+
+    }
+}
+
+.player-position {
+    position: absolute;
+    right: 0;
+}
+
+.btn-add {
+    position: absolute;
+    right: 32px;
+    bottom: 32px;
+}
+
+.pin-bottom {
+    position: absolute;
+    bottom: 32px;
+    left: 100px;
+    right: 100px;
+}

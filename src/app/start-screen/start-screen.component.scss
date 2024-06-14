@@ -1,0 +1,35 @@
+@import './../../styles.scss';
+
+.start-screen {
+    background-color: #000000;
+    width: 100vw;
+    height: 100vh;
+    max-width: 100%;
+    @include dFlex;
+
+    img {
+        // height: 50vh;
+        width: 80vw;
+        background-size: cover;
+    }
+
+    div {
+        @include dFlex;
+        color: whitesmoke;
+        position: absolute;
+        left: 0;
+        right: 0;
+        font-weight: bold;
+        font-size: 5em !important;
+        padding-left: 2%;
+
+        h3 {
+            font-size:1.1em;
+            &:hover {
+                font-size:1.2em;
+                cursor: pointer;
+                color: white;
+            }
+        }
+    }
+}
