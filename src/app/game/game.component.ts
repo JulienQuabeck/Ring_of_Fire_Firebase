@@ -17,7 +17,7 @@ import {
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { inject } from '@angular/core';
-import { Firestore, collection, collectionData, onSnapshot, addDoc, doc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, onSnapshot, addDoc, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -35,7 +35,7 @@ export class GameComponent implements OnInit {
   firestore: Firestore = inject(Firestore); // neu
   test: any;
   gameJson = [];
-  url: string | undefined;
+  url: string = '';
   unsubList;
 
   constructor(private route: ActivatedRoute, public dialog: MatDialog) {
@@ -45,7 +45,7 @@ export class GameComponent implements OnInit {
       this.url = params.id;
     });
     this.unsubList = onSnapshot(doc(this.getData(), this.url), (currentGame: any) => {
-      console.log("current Game: ", currentGame.data());
+      // console.log("current Game: ", currentGame.data());
       this.game.currentPlayer = currentGame.data().currentPlayer;
       this.game.playedCard = currentGame.data().playedCard;
       this.game.players = currentGame.data().players;
@@ -79,12 +79,13 @@ export class GameComponent implements OnInit {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop();
       this.pickCardAnimation = true;
-
+      // this.saveGame();    
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       setTimeout(() => {
         this.game.playedCard.push(this.currentCard);
         this.pickCardAnimation = false;
+        this.saveGame();
       }, 1000);
     }
   }
@@ -96,7 +97,25 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe(name => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.saveGame();
       }
     })
+  }
+
+  async saveGame() {
+    let Ref = doc(this.getData(), this.url);   
+    let currentplayer  = this.game.toJson().currentPlayer;
+    let playedCard = this.game.toJson().playedCard;
+    let players = this.game.toJson().players;
+    let stack = this.game.toJson().stack;
+    console.log('before update: ', currentplayer);
+    await updateDoc(Ref, {
+      currentplayer: currentplayer,
+      playedCard: playedCard,
+      players: players,
+      stack: stack,
+    });
+    debugger;
+    console.log('after update: ', currentplayer);
   }
 }
