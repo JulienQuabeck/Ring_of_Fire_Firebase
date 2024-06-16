@@ -114,7 +114,7 @@ export class GameComponent implements OnInit {
     console.log('before updateDoc (currentplayer): ',currentplayer);
     console.log('before updateDoc (this.game.toJson().currentPlayer): ',this.game.toJson().currentPlayer);
     await updateDoc(Ref, {
-      currentplayer: currentplayer,
+      currentPlayer: currentplayer,
       playedCard: playedCard,
       players: players,
       stack: stack,
