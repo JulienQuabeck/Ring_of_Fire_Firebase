@@ -110,7 +110,9 @@ export class GameComponent implements OnInit {
     let players = this.game.toJson().players;
     let stack = this.game.toJson().stack;
     let currentCard = this.game.toJson().currentCard;
-    let pickCardAnimation = this.game.toJson().pickCardAnimation;
+    let pickCardAnimation = this.game.toJson().pickCardAnimation;    
+    console.log('before updateDoc (currentplayer): ',currentplayer);
+    console.log('before updateDoc (this.game.toJson().currentPlayer): ',this.game.toJson().currentPlayer);
     await updateDoc(Ref, {
       currentplayer: currentplayer,
       playedCard: playedCard,
@@ -119,5 +121,7 @@ export class GameComponent implements OnInit {
       currentCard: currentCard,
       pickCardAnimation: pickCardAnimation,
     });
+    console.log('after updateDoc (currentplayer): ',currentplayer);
+    console.log('after updateDoc (this.game.toJson().currentPlayer): ',this.game.toJson().currentPlayer);
   }
 }
