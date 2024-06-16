@@ -29,8 +29,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class GameComponent implements OnInit {
-  pickCardAnimation = false;
-  currentCard: any;
+
   game: Game;
   firestore: Firestore = inject(Firestore); // neu
   test: any;
@@ -50,6 +49,8 @@ export class GameComponent implements OnInit {
       this.game.playedCard = currentGame.data().playedCard;
       this.game.players = currentGame.data().players;
       this.game.stack = currentGame.data().stack;
+      this.game.currentCard = currentGame.data().currentCard;
+      this.game.pickCardAnimation = currentGame.data().pickCardAnimation;
     })
   }
 
@@ -76,15 +77,15 @@ export class GameComponent implements OnInit {
   }
 
   takeCard() {
-    if (!this.pickCardAnimation) {
-      this.currentCard = this.game.stack.pop();
-      this.pickCardAnimation = true;
-      // this.saveGame();    
+    if (!this.game.pickCardAnimation) {
+      this.game.currentCard = this.game.stack.pop();
+      this.game.pickCardAnimation = true;   
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+      this.saveGame(); 
       setTimeout(() => {
-        this.game.playedCard.push(this.currentCard);
-        this.pickCardAnimation = false;
+        this.game.playedCard.push(this.game.currentCard);
+        this.game.pickCardAnimation = false;
         this.saveGame();
       }, 1000);
     }
@@ -108,14 +109,15 @@ export class GameComponent implements OnInit {
     let playedCard = this.game.toJson().playedCard;
     let players = this.game.toJson().players;
     let stack = this.game.toJson().stack;
-    console.log('before update: ', currentplayer);
+    let currentCard = this.game.toJson().currentCard;
+    let pickCardAnimation = this.game.toJson().pickCardAnimation;
     await updateDoc(Ref, {
       currentplayer: currentplayer,
       playedCard: playedCard,
       players: players,
       stack: stack,
+      currentCard: currentCard,
+      pickCardAnimation: pickCardAnimation,
     });
-    debugger;
-    console.log('after update: ', currentplayer);
   }
 }
